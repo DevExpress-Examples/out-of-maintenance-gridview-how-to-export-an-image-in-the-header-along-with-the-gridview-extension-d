@@ -16,13 +16,13 @@ namespace CS.Controllers {
         }
 
         public ActionResult ExportTo() {
-            PrintingSystem ps = new PrintingSystem();
+            var ps = new PrintingSystemBase();
 
-            Link headerImageLink = new Link(ps);
+            var headerImageLink = new LinkBase(ps);
 
             headerImageLink.CreateDetailArea += headerImageLink_CreateDetailArea;
 
-            PrintableComponentLink link1 = new PrintableComponentLink(ps);
+            var link1 = new PrintableComponentLinkBase(ps);
             GridViewSettings categoriesGridSettings = new GridViewSettings();
             categoriesGridSettings.Name = "gvCategories";
             categoriesGridSettings.KeyFieldName = "CategoryID";
@@ -31,7 +31,7 @@ namespace CS.Controllers {
             categoriesGridSettings.Columns.Add("Description");
             link1.Component = GridViewExtension.CreatePrintableObject(categoriesGridSettings, MyModel.GetCategories());
 
-            CompositeLink compositeLink = new CompositeLink(ps);
+            var compositeLink = new CompositeLinkBase(ps);
             compositeLink.Links.AddRange(new object[] { headerImageLink, link1 });
             compositeLink.CreateDocument();
 
@@ -45,9 +45,9 @@ namespace CS.Controllers {
             e.Graph.DrawImage(SystemIcons.Application.ToBitmap(), new RectangleF(0, 0, 100, 50));
         }
 
-        protected FileStreamResult CreateExcelExportResult(CompositeLink link) {
+        protected FileStreamResult CreateExcelExportResult(CompositeLinkBase link) {
             MemoryStream stream = new MemoryStream();
-            link.PrintingSystem.ExportToXls(stream);
+            link.PrintingSystemBase.ExportToXls(stream);
             stream.Position = 0;
             FileStreamResult result = new FileStreamResult(stream, "application/xls");
             result.FileDownloadName = "MyData.xls";

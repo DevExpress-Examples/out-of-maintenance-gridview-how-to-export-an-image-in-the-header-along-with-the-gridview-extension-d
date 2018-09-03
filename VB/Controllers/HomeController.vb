@@ -18,13 +18,13 @@ Namespace CS.Controllers
 		End Function
 
 		Public Function ExportTo() As ActionResult
-			Dim ps As New PrintingSystem()
+			Dim ps As New PrintingSystemBase()
 
-			Dim headerImageLink As New Link(ps)
+			Dim headerImageLink As New LinkBase(ps)
 
 			AddHandler headerImageLink.CreateDetailArea, AddressOf headerImageLink_CreateDetailArea
 
-			Dim link1 As New PrintableComponentLink(ps)
+			Dim link1 As New PrintableComponentLinkBase(ps)
 			Dim categoriesGridSettings As New GridViewSettings()
 			categoriesGridSettings.Name = "gvCategories"
 			categoriesGridSettings.KeyFieldName = "CategoryID"
@@ -33,7 +33,7 @@ Namespace CS.Controllers
 			categoriesGridSettings.Columns.Add("Description")
 			link1.Component = GridViewExtension.CreatePrintableObject(categoriesGridSettings, MyModel.GetCategories())
 
-			Dim compositeLink As New CompositeLink(ps)
+			Dim compositeLink As New CompositeLinkBase(ps)
 			compositeLink.Links.AddRange(New Object() { headerImageLink, link1 })
 			compositeLink.CreateDocument()
 
@@ -47,9 +47,9 @@ Namespace CS.Controllers
 			e.Graph.DrawImage(SystemIcons.Application.ToBitmap(), New RectangleF(0, 0, 100, 50))
 		End Sub
 
-		Protected Function CreateExcelExportResult(ByVal link As CompositeLink) As FileStreamResult
+		Protected Function CreateExcelExportResult(ByVal link As CompositeLinkBase) As FileStreamResult
 			Dim stream As New MemoryStream()
-			link.PrintingSystem.ExportToXls(stream)
+			link.PrintingSystemBase.ExportToXls(stream)
 			stream.Position = 0
 			Dim result As New FileStreamResult(stream, "application/xls")
 			result.FileDownloadName = "MyData.xls"
