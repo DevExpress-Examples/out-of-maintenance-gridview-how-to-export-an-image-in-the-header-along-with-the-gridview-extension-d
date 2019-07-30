@@ -8,7 +8,7 @@
 <!-- default file list end -->
 # GridView - How to export an image in the header along with the GridView extension data
 <!-- run online -->
-**[[Run Online]](https://codecentral.devexpress.com/t328898)**
+**[[Run Online]](https://codecentral.devexpress.com/t328898/)**
 <!-- run online end -->
 
 
